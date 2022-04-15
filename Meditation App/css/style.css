@@ -1,0 +1,298 @@
+/* STYLE.CSS */
+
+/* #3 : GENERAL CSS*/
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+/* VIDEO */
+
+.video{
+    width: 100vw;
+    height: 100vh;
+   /*  to avoid scrolling and video covers the whole screen */
+   
+   position: fixed;
+   top:0;
+   left: 0;
+   z-index: -1;
+   
+}
+
+.video video{
+    position: absolute;         
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+}
+
+/* APP */
+/* CREATING LAYOUT USING CSS GRID */
+.app{
+    display: grid;
+    width:100vw;
+    height: 100vh;
+    grid-template-areas:
+    "audio audio audio audio season season" 
+    "audio audio audio audio season season"
+    "duration duration duration duration season season" 
+    "duration duration duration duration season season"
+    ;
+
+    transition: opacity 1000ms ease-in-out;
+    
+}
+
+.inactive{                          /* added during js2 */
+    opacity: 0;
+    /* we are using opacity since we only want it to become invisible and to not freeze the working. */
+}
+
+/* AUDIO */
+.audio{
+    grid-area: audio;
+   /*  background-color: burlywood;
+    opacity: 60%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   /* //this was to center them */
+}
+
+.audio img{
+    width:50px;
+    /* height:50px;   only width was needed i sorted out.*/
+
+    cursor: pointer;
+}
+
+.audio .progress{
+    width:200px;
+    height: 200px;
+    position: relative;
+    /* to set the domain of the progress bar */
+    /* as svg where sticking to the inages we add margin to progress bar */
+    margin: 0 50px;
+}
+
+.audio .progress svg{
+    position:absolute;
+    /* this will set them on one another, but they are still incomplete
+    so we add width and height too */
+    width:200px;
+    height: 200px;
+
+    /* then we rotate our svg's by 45 degress */
+    transform: rotate(45deg);
+    z-index: -1;           /* addded during js3 */
+}
+
+
+
+/* now bringing the remaining time clock in center of the audio box */
+
+.audio .progress .audio-remaining-time{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 2rem;
+    font-weight: bolder;
+}
+
+
+/* SEASONS */
+.seasons{
+    grid-area: season;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-top:50%;
+    padding-bottom:50%;
+    /* padding-right:50%; */
+}
+
+
+
+.seasons .season img{
+    width: 75px;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 15px rgb(17, 16, 16));
+}
+
+/* TOGGLE-MENU */
+
+.seasons .toogle-menu{
+    display: none;
+}
+
+/* DURATIONS*/
+.durations{
+    grid-area: duration;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 25%;
+}
+
+.durations .duration{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.durations .duration img{
+    width:75px;
+    cursor: pointer;
+
+    /* for shadow we won't put things like how we do for text, here we will use filter */
+    filter: drop-shadow(2px 2px 15px rgb(17, 16, 16));
+}
+
+.durations .duration p{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    margin-top: 12px;
+    text-shadow: 2px 2px 15px rgb(17, 16, 16);
+}
+
+/* FOR SMALL SCREENS ASSIGN MEDIA QUERY */
+
+@media screen and (max-width: 600px) {
+    .video video{
+        height: 100%;
+    }
+
+    /* APP */
+    /* we will change the grid here, as we are not using div.seasons */
+    .app{
+        grid-template-areas: 
+        "audio"
+        "audio"
+        "audio"
+        "audio"
+        "duration"
+        ;
+    }
+
+    /* AUDIO CSS FOR SMALL SCREEN SIZES , since we where feeling a need to swipe to read whole screen*/
+    /* Copying all the audio css here */
+
+    /* AUDIO */
+
+    .audio img{
+        width:40px;
+        
+    }
+    .audio .progress{
+        width:175px;
+        height: 175px;
+        margin: 0 10px;
+    }
+
+    .audio .progress svg{
+        
+        width:175px;
+        height: 175px;
+    }
+
+    .audio .progress svg .rect1, 
+    .rect{
+        width:125px;
+        height: 125px;
+    }
+    .audio .progress .audio-remaining-time{
+        
+        font-size: 1.75rem;
+        font-weight: bolder;
+    }
+
+    /* DURATIONS
+    small screen css */
+
+    .durations {
+        padding: 0 10%;
+    }
+    .durations .duration img{
+        width: 50px;
+    }
+    .durations .duration p{
+        font-size: 1rem;
+    }
+
+    /* SEASONS
+    we need to made menu-bar and shift all seasons their. 
+    As seasons are not often we shidt them to menu bar instead of the durations which are needed to be kept in front. */
+
+    .seasons{
+        position: absolute;
+        padding: 0px;
+        top: 20px;
+        /* left: 0px; */
+        /* chnaging left to negative value to hide all the seasons. We will use JS to make it listen our click and ease out.*/
+        left: -250px;
+
+        /* we also chnage the flex durection */
+        flex-direction: row;
+        background-color: white;
+        padding: 5px;
+
+        /* smoothing out corners */
+        border-radius: 0px 5px 5px 0px ;
+        transition: left 500ms ease-in-out;     /* added during js1 */
+    }
+
+    .open{                          /* added during js1 */
+        left:0px;
+    }
+
+    .seasons .season{
+        margin-left:10px;
+    }
+
+    .seasons .season img{
+        width: 50px;
+        /* removing shadows */
+        filter: none;
+    }
+
+
+    /* TOGGLE MENU */
+    .toggle-menu{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: red; */
+        padding: 5px;
+        margin-left: 10px;
+        border-radius: 50%;
+
+        transition: all 500ms ease-in-out;      /* added during js1 */
+    }
+
+    .rotate{                                    /* added during js1 */
+        transform: rotate(180deg);
+    }
+
+    .toggle-menu:hover{
+        background-color: rgba(0,0,0, 0.2);
+        cursor: pointer;
+    }
+
+    .toggle-menu img{
+        width: 20px;
+    }
+}
+
+
+
